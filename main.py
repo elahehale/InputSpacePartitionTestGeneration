@@ -1,5 +1,6 @@
 import copy
 
+
 def get_input():
     characteristics = input("Enter list of comma seperated characteristic: ")
     characteristics = characteristics.split(",")
@@ -11,6 +12,22 @@ def get_input():
         max_blocks_num = max(max_blocks_num, len(ch_blocks))
         abstract_blocks.append(ch_blocks)
     return characteristics, abstract_blocks, max_blocks_num
+
+
+def get_bcc_base(characteristics_num):
+    base = get_mbcc_bases(1, characteristics_num)[0]
+    print(base)
+    return base
+
+def get_mbcc_bases(m, characteristic_num):
+    bases = [[] for t in range(characteristic_num)]
+    for i in range(m):
+        base_blocks = input("Enter blocks index of base" + str(i + 1) + " comma seperated: ")
+        blocks = base_blocks.split(",")
+        for j in range(characteristic_num):
+            bases[j].append(blocks[j])
+    print(bases)
+    return bases
 
 
 def acoc_test_generation(characteristics, abstract_blocks):
@@ -55,6 +72,13 @@ def bcc_test_generation(characteristics, abstract_blocks, base):
     return tests
 
 
+def mbcc_test_generation(characteristics, abstract_blocks, bases):
+    base_test = []
+    tests = []
+    print(tests)
+    return tests
+
+
 def acoc():
     # chars, blocks, _ = get_input()
     acoc_test_generation(['A', 'B'], [['a1', 'a2', 'a3'], ['b1', 'b2']])
@@ -66,8 +90,9 @@ def ecc():
 
 
 def bcc():
-    # chars, blocks, tests_len = get_input()
-    bcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3'], ['c1','c2']], [1,1,1])
+    # chars, blocks, _ = get_input()
+    # base = get_bcc_input(len(chars))
+    bcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3'], ['c1', 'c2']], [1, 1, 1])
 
 
 mode = input("choose your test generation mode\n1 = ACoC\n2 = ECC\n3 = BCC\n4 = MBCC\nEnter number: ")
@@ -76,5 +101,6 @@ methods = {
     '2': ecc,
     '3': bcc,
 }
-methods.get(mode)()
+# methods.get(mode)()
 
+get_mbcc_input(3, 4)
