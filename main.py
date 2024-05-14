@@ -19,6 +19,7 @@ def get_bcc_base(characteristics_num):
     print(base)
     return base
 
+
 def get_mbcc_bases(m, characteristic_num):
     bases = [[] for t in range(characteristic_num)]
     for i in range(m):
@@ -37,7 +38,7 @@ def acoc_test_generation(characteristics, abstract_blocks):
         temp_tests = []
         for test in tests:
             for block in abstract_blocks[i]:
-                new_test = test + (',' if i != 0 & i < ch_len else '') + block
+                new_test = test + (',' if i != 0 and i < ch_len else '') + block
                 temp_tests.append(new_test)
         tests = temp_tests
     print(tests)
@@ -50,8 +51,28 @@ def ecc_test_generation(characteristics, abstract_blocks, test_num):
     while i < test_num:
         for j, ch in enumerate(characteristics):
             length = len(abstract_blocks[j])
-            tests[i] = tests[i] + (',' if j != 0 & j < test_num else '') + abstract_blocks[j][min(i, i % length)]
+            tests[i] = tests[i] + (',' if j != 0 and j < test_num else '') + abstract_blocks[j][min(i, i % length)]
         i += 1
+    print(tests)
+    return tests
+
+
+def mbcc_test_generation(characteristics, abstract_blocks, bases):
+    tests =[]
+    for x in range(len(bases[0])):
+        base = []
+        base_test = []
+        for block in bases:
+            base.append(block[x])
+        for ch, b in enumerate(base):
+            base_test.append(abstract_blocks[ch][b])
+        tests.append(','.join(base_test))
+        for i, ch in enumerate(characteristics):
+            for j, block in enumerate(abstract_blocks[i]):
+                new_test = copy.copy(base_test)
+                if j not in bases[i]:
+                    new_test[i] = block
+                    tests.append(','.join(new_test))
     print(tests)
     return tests
 
@@ -72,12 +93,6 @@ def bcc_test_generation(characteristics, abstract_blocks, base):
     return tests
 
 
-def mbcc_test_generation(characteristics, abstract_blocks, bases):
-    base_test = []
-    tests = []
-    print(tests)
-    return tests
-
 
 def acoc():
     # chars, blocks, _ = get_input()
@@ -94,13 +109,20 @@ def bcc():
     # base = get_bcc_input(len(chars))
     bcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3'], ['c1', 'c2']], [1, 1, 1])
 
+def mbcc():
+    # chars, blocks, _ = get_input()
+    # base = get_bcc_input(len(chars))
+    bcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3'], ['c1', 'c2']], [1, 1, 1])
 
-mode = input("choose your test generation mode\n1 = ACoC\n2 = ECC\n3 = BCC\n4 = MBCC\nEnter number: ")
-methods = {
-    '1': acoc,
-    '2': ecc,
-    '3': bcc,
-}
+
+# mode = input("choose your test generation mode\n1 = ACoC\n2 = ECC\n3 = BCC\n4 = MBCC\nEnter number: ")
+# methods = {
+#     '1': acoc,
+#     '2': ecc,
+#     '3': bcc,
+#     '4': mbcc,
+# }
 # methods.get(mode)()
 
-get_mbcc_input(3, 4)
+# print(get_mbcc_bases(3, 4))
+mbcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3','b4'], ['c1', 'c2']], [[1,2],[1,2],[1,1]])
