@@ -2,15 +2,37 @@ import copy
 
 
 def get_input():
-    characteristics = input("Enter list of comma seperated characteristic: ")
-    characteristics = characteristics.split(",")
+    # get non-empty list of characteristics
+    while True:
+        characteristics_input = input("Enter list of comma-separated characteristics, at least one required: ")
+        characteristics = [item.strip() for item in characteristics_input.split(",") if item.strip()]
+        # handle empty list
+        if characteristics:
+            break
+        else:
+            print("Please enter at least one valid characteristic.")
+    print("Your given characteristics: " + ", ".join(characteristics))
+
     abstract_blocks = []
     max_blocks_num = 0
-    for ch in characteristics:
-        ch_blocks = input("Enter blocks of characteristic " + ch + " comma seperated: ")
-        ch_blocks = ch_blocks.split(",")
-        max_blocks_num = max(max_blocks_num, len(ch_blocks))
-        abstract_blocks.append(ch_blocks)
+
+    # get list of abstract blocks for each characteristic. abstract blocks can't be empty
+    i = 0
+    while i < len(characteristics):
+        ch = characteristics[i]
+        while True:
+            ch_blocks_input = input(f"Enter blocks of characteristic '{ch}' comma separated, at least one required: ")
+            ch_blocks = [item.strip() for item in ch_blocks_input.split(",") if item.strip()]
+            # handle empty list
+            if ch_blocks:
+                max_blocks_num = max(max_blocks_num, len(ch_blocks))
+                abstract_blocks.append(ch_blocks)
+                break
+            else:
+                print("Blocks can't be empty for a characteristic. Please enter at least one block.")
+        i += 1
+
+    print("Blocks for each characteristic:", abstract_blocks)
     return characteristics, abstract_blocks, max_blocks_num
 
 
@@ -125,4 +147,5 @@ def mbcc():
 # methods.get(mode)()
 
 # print(get_mbcc_bases(3, 4))
-mbcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3','b4'], ['c1', 'c2']], [[1,2],[1,2],[1,1]])
+# mbcc_test_generation(['A', 'B', 'C'], [['a1', 'a2', 'a3', 'a4'], ['b1', 'b2', 'b3','b4'], ['c1', 'c2']], [[1,2],[1,2],[1,1]])
+get_input()
